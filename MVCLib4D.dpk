@@ -1,0 +1,68 @@
+package MVCLib4D;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Biblioteca de classes comuns de uso geral para aplicações Zeus com padrão MVC'}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  vcl,
+  dbrtl,
+  vclFireDAC,
+  FireDAC,
+  FireDACCommonDriver,
+  FireDACCommon,
+  FireDACPgDriver;
+
+contains
+  mvcValidator.Interfaces in 'Source\Validator\mvcValidator.Interfaces.pas',
+  mvcValidator in 'Source\Validator\mvcValidator.pas',
+  mvcValidator.Text.Constraints in 'Source\Validator\mvcValidator.Text.Constraints.pas',
+  mvcValidator.Text.Properties.MaxLength in 'Source\Validator\mvcValidator.Text.Properties.MaxLength.pas',
+  mvcValidator.Text.Properties.MinLength in 'Source\Validator\mvcValidator.Text.Properties.MinLength.pas',
+  mvcValidator.Text.Properties.NonEmpty in 'Source\Validator\mvcValidator.Text.Properties.NonEmpty.pas',
+  mvcValidator.Text.Properties in 'Source\Validator\mvcValidator.Text.Properties.pas',
+  mvcEntity.Interfaces in 'Source\ModelEntity\mvcEntity.Interfaces.pas',
+  mvcEntity.List.DataModule in 'Source\ModelEntity\mvcEntity.List.DataModule.pas' {dmEntityQuery: TDataModule},
+  mvcEntity.List in 'Source\ModelEntity\mvcEntity.List.pas',
+  mvcEntity in 'Source\ModelEntity\mvcEntity.pas',
+  mvcDAO.Generic in 'Source\DAO\mvcDAO.Generic.pas',
+  mvcDAO.Interfaces in 'Source\DAO\mvcDAO.Interfaces.pas',
+  mvcDAO.RTTI.Adapter in 'Source\DAO\mvcDAO.RTTI.Adapter.pas',
+  mvcDAO.RTTI in 'Source\DAO\mvcDAO.RTTI.pas',
+  mvcDAO.RTTI.StringUtils in 'Source\DAO\mvcDAO.RTTI.StringUtils.pas',
+  mvcDAO.RTTI.Types in 'Source\DAO\mvcDAO.RTTI.Types.pas',
+  mvcDAO.Types in 'Source\DAO\mvcDAO.Types.pas',
+  mvcConnections.DB.DatabaseParams in 'Source\Connections\mvcConnections.DB.DatabaseParams.pas',
+  mvcConnections.DB.Firedac.PostgreSQL in 'Source\Connections\mvcConnections.DB.Firedac.PostgreSQL.pas',
+  mvcConnections.Interfaces in 'Source\Connections\mvcConnections.Interfaces.pas',
+  mvcLogger.Interfaces in 'Source\Logger\mvcLogger.Interfaces.pas',
+  mvcLogger in 'Source\Logger\mvcLogger.pas',
+  mvcEntity.DTO.Interfaces in 'Source\ModelEntity\mvcEntity.DTO.Interfaces.pas';
+
+end.
