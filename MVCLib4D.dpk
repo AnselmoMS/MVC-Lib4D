@@ -25,7 +25,7 @@ package MVCLib4D;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Biblioteca de classes comuns de uso geral para aplicações Zeus com padrão MVC'}
+{$DESCRIPTION 'Biblioteca de classes comuns de uso geral para aplicações com padrão MVC'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}
 
@@ -63,6 +63,8 @@ contains
   mvcConnections.Interfaces in 'Source\Connections\mvcConnections.Interfaces.pas',
   mvcLogger.Interfaces in 'Source\Logger\mvcLogger.Interfaces.pas',
   mvcLogger in 'Source\Logger\mvcLogger.pas',
-  mvcEntity.DTO.Interfaces in 'Source\ModelEntity\mvcEntity.DTO.Interfaces.pas';
+  mvcEntity.DTO.Interfaces in 'Source\ModelEntity\mvcEntity.DTO.Interfaces.pas',
+  mvcDBEntity in 'Source\ModelEntity\mvcDBEntity.pas';
 
 end.
+

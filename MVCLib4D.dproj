@@ -69,6 +69,7 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_Description>Biblioteca de classes comuns de uso geral para aplicações Zeus com padrão MVC</DCC_Description>
+        <DCC_IMPLICIT_IMPORT>false</DCC_IMPLICIT_IMPORT>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -116,6 +117,7 @@
         <DCCReference Include="Source\Logger\mvcLogger.Interfaces.pas"/>
         <DCCReference Include="Source\Logger\mvcLogger.pas"/>
         <DCCReference Include="Source\ModelEntity\mvcEntity.DTO.Interfaces.pas"/>
+        <DCCReference Include="Source\ModelEntity\mvcDBEntity.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

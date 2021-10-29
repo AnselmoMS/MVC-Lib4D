@@ -117,7 +117,8 @@ end;
 
 function TConnectorDBFiredacPostgreSQL.DisConnect: IConnectorDB;
 begin
-  FDConnection.Connected := False
+  FDConnection.Connected := False;
+  Result := Self;
 end;
 
 procedure TConnectorDBFiredacPostgreSQL.DoAfterExecSQL(_SQL: string);

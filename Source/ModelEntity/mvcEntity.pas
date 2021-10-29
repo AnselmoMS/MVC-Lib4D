@@ -3,32 +3,36 @@ unit mvcEntity;
 interface
 
 uses
-  mvcConnections.Interfaces,
   mvcDAO.Generic,
   mvcDAO.Interfaces,
   mvcDAO.Types,
   mvcEntity.Interfaces,
-  mvcLogger.Interfaces,
   mvcEntity.DTO.Interfaces;
 
 type
+  TDMLProc = procedure(_ADMLOperation: TDMLOperation) of object;
+  TAfterDMLProc = procedure(_AOperation: TDMLOperation; _SQLStatment: String) of object;
+
   TEntity<T: class, constructor, IDTO> = class(TInterfacedObject, IEntity<T>)
   private
-   const
-    DML_TO_LOG = [dmlUpdate, dmlDelete];
    var
+    FOnAfterDML: TAfterDMLProc;
     FEntityListActions: IEntityList<T>;
-    //
-    function GetSQLBuilder: ISQL<T>;
     procedure DoAfterDML(_AOperation: TDMLOperation; _SQLStatment: String);
     procedure ExecuteDML(_ADMLOperation: TDMLOperation);
   protected
-    FConnection: IConnectorDB;
-    FLogger: ILogger;
-    FData: T;
+    FDTO: T;
+    //
+    function GetSQLBuilder: ISQL<T>;
+    //
+    procedure DoExecDML(_AOperation: TDMLOperation); virtual;
+    //
+    property OnAfterDML: TAfterDMLProc read FOnAfterDML write FOnAfterDML;
   public
     constructor Create;
+    //
     function LoadFrom(_AEntityData: T): IEntity<T>;
+    //
     class function New: IEntity<T>;
     //
     function Delete: IEntity<T>;
@@ -60,10 +64,10 @@ end;
 
 function TEntity<T>.EntityData: T;
 begin
-  if not Assigned(FData) then
-    FData := T.Create;
+  if not Assigned(FDTO) then
+    FDTO := T.Create;
 
-  Result := FData;
+  Result := FDTO;
 end;
 
 procedure TEntity<T>.ExecuteDML(_ADMLOperation: TDMLOperation);
@@ -71,24 +75,16 @@ var
   aSQLStatment : string;
 begin
   try
-    if not Assigned(FConnection) then
-      raise Exception.Create('Connection was not assigned!');
-    //
-    FConnection.StartTransaction;
-    aSQLStatment := GetSQLBuilder.GetDML(_ADMLOperation);
-    FConnection.ExecSQL(aSQLStatment);
-    FConnection.Commit;
-    //
+    DoExecDML(_ADMLOperation);
     DoAfterDML(_ADMLOperation, aSQLStatment);
   except
-    FConnection.Rollback;
     raise;
   end;
 end;
 
 function TEntity<T>.GetSQLBuilder: ISQL<T>;
 begin
-  Result := TSQLGeneric<T>.New(FData);
+  Result := TSQLGeneric<T>.New(FDTO);
 end;
 
 function TEntity<T>.Insert: IEntity<T>;
@@ -104,15 +100,19 @@ end;
 
 function TEntity<T>.LoadFrom(_AEntityData: T): IEntity<T>;
 begin
-  FData:= _AEntityData;
+  FDTO:= _AEntityData;
   Result := Self;
 end;
 
 procedure TEntity<T>.DoAfterDML(_AOperation: TDMLOperation; _SQLStatment: String);
 begin
-  if Assigned(FLogger) then
-    if _AOperation in DML_TO_LOG then
-      FLogger.AddLog(DML_OPERATION_DESC[_AOperation] + ' >> ' + _SQLStatment)
+  if Assigned(FOnAfterDML) then
+    FOnAfterDML(_AOperation, _SQLStatment);
+end;
+
+procedure TEntity<T>.DoExecDML(_AOperation: TDMLOperation);
+begin
+//
 end;
 
 class function TEntity<T>.New: IEntity<T>;
