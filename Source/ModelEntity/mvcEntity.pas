@@ -7,12 +7,10 @@ uses
   mvcDAO.Interfaces,
   mvcDAO.Types,
   mvcEntity.Interfaces,
-  mvcEntity.DTO.Interfaces;
+  mvcEntity.DTO.Interfaces,
+  mvcEntity.Types;
 
 type
-  TDMLProc = procedure(_ADMLOperation: TDMLOperation) of object;
-  TAfterDMLProc = procedure(_AOperation: TDMLOperation; _SQLStatment: String) of object;
-
   TEntity<T: class, constructor, IDTO> = class(TInterfacedObject, IEntity<T>)
   private
    var
