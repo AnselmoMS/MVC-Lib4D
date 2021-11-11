@@ -13,9 +13,11 @@ type
   IEntity<T: class, constructor, IDTO> = interface;
   IEntityList<T: class, constructor, IDTO> = interface;
 
-  IDBEntity<T> = interface
+  IDBEntity<T> = interface  //T is A Entity | EntityList
     ['{423470FD-03A6-4D17-8DF7-5BBBCC4A4608}']
     function WithConnection(_AConnection: IConnectorDB): T;
+    function Connection: IConnectorDB;
+    function SetupDefaultConection: T;
   end;
 
   ILoggerEntity<T> = interface
@@ -25,14 +27,17 @@ type
 
   IEntityList<T: class, constructor, IDTO> = interface
     ['{96125D08-8D94-45BF-9597-711944188BF6}']
-    function GetDataSet: TDataSet;
     function GetDataList: TList<T>;
-    function GetDataSource: TDataSource;
     function SelectAll: IEntityList<T>;
     function LoadFromList(_SourceList: TList<T>): IEntityList<T>;
     function InsertAll: IEntityList<T>;
     function UpdateAll: IEntityList<T>;
     function DeleteAll: IEntityList<T>;
+  end;
+
+  IEBEntityList = interface
+    function GetDataSet: TDataSet;
+    function GetDataSource: TDataSource;
   end;
 
   IEntity<T: class, constructor, IDTO> = interface

@@ -24,6 +24,7 @@ type
     //
     procedure ClearLastError;
     procedure SetAssignedError;
+    procedure ResetControls;
 
   public
     const
@@ -35,6 +36,8 @@ type
     //
     function EndUpdate: IValidatorTextConstraints; virtual;
     function DisplayError: IValidatorTextProperties;
+    function ResetError: IValidatorTextProperties;
+
     function EndAll: IValidator;
     function ErrorMessage(_Mgs: string): IValidatorTextProperties;
     function ErrorStyle(_AColor: TColor = DEFAULT_ERROR_STYLE_COLOR): IValidatorTextProperties;
@@ -69,9 +72,7 @@ end;
 
 function TValidatorTextProperties.DisplayError: IValidatorTextProperties;
 begin
-  TControlAccess(FParentConstraint.GetEdit).Color := FOriginalEditColor;
-  FParentConstraint.GetErrorLabel.Caption := '';
-  //
+  ResetControls;
   if not FLastError.IsEmpty then
   begin
     if not FParentConstraint.GetEdit.Focused then
@@ -125,6 +126,19 @@ end;
 class function TValidatorTextProperties.New(_AparentConstraint: IValidatorTextConstraints): IValidatorTextProperties;
 begin
   Result := Self.Create(_AparentConstraint);
+end;
+
+procedure TValidatorTextProperties.ResetControls;
+begin
+  TControlAccess(FParentConstraint.GetEdit).Color := FOriginalEditColor;
+  FParentConstraint.GetErrorLabel.Caption := '';
+end;
+
+function TValidatorTextProperties.ResetError: IValidatorTextProperties;
+begin
+  ClearLastError;
+  ResetControls;
+  Result := Self;
 end;
 
 procedure TValidatorTextProperties.SetAssignedError;

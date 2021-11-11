@@ -96,14 +96,6 @@
         <DCCReference Include="Source\Validator\mvcValidator.Text.Properties.MinLength.pas"/>
         <DCCReference Include="Source\Validator\mvcValidator.Text.Properties.NonEmpty.pas"/>
         <DCCReference Include="Source\Validator\mvcValidator.Text.Properties.pas"/>
-        <DCCReference Include="Source\ModelEntity\mvcEntity.Interfaces.pas"/>
-        <DCCReference Include="Source\ModelEntity\mvcEntity.List.DataModule.pas">
-            <Form>dmEntityQuery</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TDataModule</DesignClass>
-        </DCCReference>
-        <DCCReference Include="Source\ModelEntity\mvcEntity.List.pas"/>
-        <DCCReference Include="Source\ModelEntity\mvcEntity.pas"/>
         <DCCReference Include="Source\DAO\mvcDAO.Generic.pas"/>
         <DCCReference Include="Source\DAO\mvcDAO.Interfaces.pas"/>
         <DCCReference Include="Source\DAO\mvcDAO.RTTI.Adapter.pas"/>
@@ -111,13 +103,10 @@
         <DCCReference Include="Source\DAO\mvcDAO.RTTI.StringUtils.pas"/>
         <DCCReference Include="Source\DAO\mvcDAO.RTTI.Types.pas"/>
         <DCCReference Include="Source\DAO\mvcDAO.Types.pas"/>
-        <DCCReference Include="Source\Connections\mvcConnections.DB.DatabaseParams.pas"/>
-        <DCCReference Include="Source\Connections\mvcConnections.DB.Firedac.PostgreSQL.pas"/>
-        <DCCReference Include="Source\Connections\mvcConnections.Interfaces.pas"/>
         <DCCReference Include="Source\Logger\mvcLogger.Interfaces.pas"/>
         <DCCReference Include="Source\Logger\mvcLogger.pas"/>
-        <DCCReference Include="Source\ModelEntity\mvcEntity.DTO.Interfaces.pas"/>
-        <DCCReference Include="Source\ModelEntity\mvcDBEntity.pas"/>
+        <DCCReference Include="Source\Validator\mvcValidator.Text.Properties.OnlyNumber.pas"/>
+        <DCCReference Include="Source\DomainTypes\mvcNullable.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

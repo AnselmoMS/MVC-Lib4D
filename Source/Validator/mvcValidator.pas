@@ -29,6 +29,8 @@ type
       function &End: IValidator;
       function SetOnChanged(_AProc: TNotifyEvent): IValidator;
       function ValidateAll: IValidator;
+     //
+     function ResetErrors: IValidator;
   end;
 
 
@@ -51,10 +53,11 @@ end;
 
 function TValidator.DisplayErrors: IValidator;
 var
-  I: IValidatorTextConstraints;
+  c: IValidatorTextConstraints;
 begin
-  for I in FTextConstraintsList do
-    I.DisplayErrors;
+  for c in FTextConstraintsList do
+    c.DisplayErrors;
+  Result := Self;
 end;
 
 function TValidator.EditLabel(_AEdit: TCustomEdit; AErrorLabel: TCustomLabel): IValidatorTextConstraints;
@@ -80,9 +83,19 @@ begin
   Result := FOnChanged;
 end;
 
+function TValidator.ResetErrors: IValidator;
+var
+  c: IValidatorTextConstraints;
+begin
+  for c in FTextConstraintsList do
+    c.ResetErrors;
+  Result := Self;
+end;
+
 function TValidator.SetOnChanged(_AProc: TNotifyEvent): IValidator;
 begin
-  FOnChanged := _AProc
+  FOnChanged := _AProc;
+  Result := Self;
 end;
 
 function TValidator.ValidateAll: IValidator;
@@ -91,6 +104,7 @@ var
 begin
   for I in FTextConstraintsList do
     I.ValidateAll;
+  Result := Self;
 end;
 
 end.

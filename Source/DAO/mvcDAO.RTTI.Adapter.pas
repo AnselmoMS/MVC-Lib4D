@@ -125,6 +125,4 @@ begin
       Exit(Entity(attrRTTI).EntityName);
 end;
 
-
-
 end.

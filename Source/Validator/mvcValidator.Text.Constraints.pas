@@ -5,13 +5,10 @@ interface
 uses
   Vcl.StdCtrls,
   System.SysUtils,
-  mvcValidator.Interfaces,
-  mvcValidator.Text.Properties.NonEmpty,
-  mvcValidator.Text.Properties.MinLength,
-  mvcValidator.Text.Properties.MaxLength,
   System.Classes,
   System.Generics.Collections,
-  mvcValidator.Text.Properties;
+  mvcValidator.Text.Properties,
+  mvcValidator.Interfaces;
 
 type
   TValidatorTextConstraints = class(TInterfacedObject, IValidatorTextConstraints)
@@ -25,7 +22,7 @@ type
     FOriginalOnExit: TNotifyEvent;
     FValidatorTextPropertiesList: TList<IValidatorTextProperties>;
     //
-    function GetValidatorTextPropertiesItemByClass(_AValidatorTextPropertiesClass: TValidatorTextPropertiesClass): IValidatorTextProperties;
+    function GetValidatorTextPropertiesInstanceByClass(_AValidatorTextPropertiesClass: TValidatorTextPropertiesClass): IValidatorTextProperties;
     //
     procedure EditOnChange(Sender: Tobject);
     procedure EditOnExit(Sender: TObject);
@@ -40,10 +37,12 @@ type
     function EndUpdate: IValidator;
     function GetEdit: TCustomEdit;
     function GetErrorLabel: TCustomLabel;
+    function ResetErrors: IValidatorTextConstraints;
     //
     function MaxLength(_Value: Integer): IValidatorTextProperties;
     function MinLength(_Value: Integer): IValidatorTextProperties;
     function NonEmpty: IValidatorTextProperties;
+    function OnlyNumber(_AMinValue, _AMaxValue: Integer): IValidatorTextProperties;
     //
     function ValidateAll: IValidatorTextConstraints;
     function ValidateAndDisplayErrors: IValidatorTextConstraints;
@@ -59,7 +58,11 @@ type
 implementation
 
 uses
-  Vcl.Controls;
+  Vcl.Controls,
+  mvcValidator.Text.Properties.NonEmpty,
+  mvcValidator.Text.Properties.MinLength,
+  mvcValidator.Text.Properties.MaxLength,
+  mvcValidator.Text.Properties.OnlyNumber;
 
 { TValidatorTextConstraints<> }
 
@@ -86,9 +89,33 @@ end;
 
 function TValidatorTextConstraints.NonEmpty: IValidatorTextProperties;
 begin
-  Result := GetValidatorTextPropertiesItemByClass(TValidatorTextPropertiesNonEmpty);
+  Result := GetValidatorTextPropertiesInstanceByClass(TValidatorTextPropertiesNonEmpty);
   if not Assigned(Result) then
     Result := FValidatorTextPropertiesList[FValidatorTextPropertiesList.Add(TValidatorTextPropertiesNonEmpty.New(Self))]
+end;
+
+function TValidatorTextConstraints.OnlyNumber(_AMinValue, _AMaxValue: Integer): IValidatorTextProperties;
+var
+  res: IValidatorTextProperties;
+begin
+  res := GetValidatorTextPropertiesInstanceByClass(TValidatorTextPropertiesOnlyNumber);
+
+  if not Assigned(res) then
+  begin
+    res := TValidatorTextPropertiesOnlyNumber.New(Self);
+    TValidatorTextPropertiesOnlyNumber(res).Range(_AMinValue, _AMaxValue);
+    FValidatorTextPropertiesList[FValidatorTextPropertiesList.Add(res)];
+  end;
+  Result := res;
+end;
+
+function TValidatorTextConstraints.ResetErrors: IValidatorTextConstraints;
+var
+  P: IValidatorTextProperties;
+begin
+  for P in FValidatorTextPropertiesList do
+    P.ResetError;
+  Result := Self;
 end;
 
 function TValidatorTextConstraints.ValidateAll: IValidatorTextConstraints;
@@ -98,7 +125,6 @@ begin
   for I := 0 to Pred(FValidatorTextPropertiesList.Count) do
     if not FValidatorTextPropertiesList[I].Validate.GetLastError.IsEmpty then
       Exit;
-
   Result := Self;
 end;
 
@@ -166,7 +192,7 @@ begin
   Result := FErrorLabel
 end;
 
-function TValidatorTextConstraints.GetValidatorTextPropertiesItemByClass(_AValidatorTextPropertiesClass: TValidatorTextPropertiesClass): IValidatorTextProperties;
+function TValidatorTextConstraints.GetValidatorTextPropertiesInstanceByClass(_AValidatorTextPropertiesClass: TValidatorTextPropertiesClass): IValidatorTextProperties;
 var
   propIndex: Integer;
 begin
@@ -178,14 +204,14 @@ end;
 
 function TValidatorTextConstraints.MaxLength(_Value: Integer): IValidatorTextProperties;
 begin
-  Result := GetValidatorTextPropertiesItemByClass(TValidatorTextPropertiesMaxLength);
+  Result := GetValidatorTextPropertiesInstanceByClass(TValidatorTextPropertiesMaxLength);
   if not Assigned(Result) then
     Result := FValidatorTextPropertiesList[FValidatorTextPropertiesList.Add(TValidatorTextPropertiesMaxLength.New(Self, _Value))]
 end;
 
 function TValidatorTextConstraints.MinLength(_Value: Integer): IValidatorTextProperties;
 begin
-  Result := GetValidatorTextPropertiesItemByClass(TValidatorTextPropertiesMinLength);
+  Result := GetValidatorTextPropertiesInstanceByClass(TValidatorTextPropertiesMinLength);
   if not Assigned(Result) then
     Result := FValidatorTextPropertiesList[FValidatorTextPropertiesList.Add(TValidatorTextPropertiesMinLength.New(Self, _Value))]
 end;

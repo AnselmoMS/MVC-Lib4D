@@ -16,14 +16,12 @@ type
    var
     FOnAfterDML: TAfterDMLProc;
     FEntityListActions: IEntityList<T>;
-    procedure DoAfterDML(_AOperation: TDMLOperation; _SQLStatment: String);
+    procedure DoAfterDML(_AOperation: TDMLOperation; _ADMLCommand: String);
     procedure ExecuteDML(_ADMLOperation: TDMLOperation);
   protected
     FDTO: T;
     //
-    function GetSQLBuilder: ISQL<T>;
-    //
-    procedure DoExecDML(_AOperation: TDMLOperation); virtual;
+    procedure DoExecDML(_AOperation: TDMLOperation; out _ADMLCommand: String); virtual;
     //
     property OnAfterDML: TAfterDMLProc read FOnAfterDML write FOnAfterDML;
   public
@@ -51,7 +49,7 @@ uses
 
 constructor TEntity<T>.Create;
 begin
-//
+  inherited Create
 end;
 
 function TEntity<T>.Delete: IEntity<T>;
@@ -70,19 +68,9 @@ end;
 
 procedure TEntity<T>.ExecuteDML(_ADMLOperation: TDMLOperation);
 var
-  aSQLStatment : string;
+  aDMLCommand: string;
 begin
-  try
-    DoExecDML(_ADMLOperation);
-    DoAfterDML(_ADMLOperation, aSQLStatment);
-  except
-    raise;
-  end;
-end;
-
-function TEntity<T>.GetSQLBuilder: ISQL<T>;
-begin
-  Result := TSQLGeneric<T>.New(FDTO);
+  DoExecDML(_ADMLOperation, aDMLCommand);
 end;
 
 function TEntity<T>.Insert: IEntity<T>;
@@ -102,15 +90,16 @@ begin
   Result := Self;
 end;
 
-procedure TEntity<T>.DoAfterDML(_AOperation: TDMLOperation; _SQLStatment: String);
+procedure TEntity<T>.DoAfterDML(_AOperation: TDMLOperation; _ADMLCommand: String);
 begin
   if Assigned(FOnAfterDML) then
-    FOnAfterDML(_AOperation, _SQLStatment);
+    FOnAfterDML(_AOperation, _ADMLCommand);
 end;
 
-procedure TEntity<T>.DoExecDML(_AOperation: TDMLOperation);
+procedure TEntity<T>.DoExecDML(_AOperation: TDMLOperation; out _ADMLCommand: String);
 begin
-//
+  inherited;
+  DoAfterDML(_AOperation, _ADMLCommand);
 end;
 
 class function TEntity<T>.New: IEntity<T>;

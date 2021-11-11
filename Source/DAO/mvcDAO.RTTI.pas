@@ -32,7 +32,7 @@ begin
   Result := Format('DELETE FROM %s WHERE %s = %s', [FDaoFinder.GetTableName, ArrayStringToStrig(FDaoFinder.GetKeyFieldNames), ArrayStringToStrig(FDaoFinder.GetKeyFieldValues)]);
 end;
 
-class function TSQLRTTI.GetInsertSQL<T>( aEntity : T): String;
+class function TSQLRTTI.GetInsertSQL<T>(aEntity : T): String;
 var
   FDaoFinder: ISQLAdapter<T>;
 begin

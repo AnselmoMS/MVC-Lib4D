@@ -5,12 +5,12 @@ interface
 uses
   mvcdao.Interfaces,
   System.SysUtils,
-  mvcConnections.Interfaces,
   mvcDAO.Types;
 
 type
   TSQLGeneric<T : class, constructor> = class(TInterfacedObject, ISQL<T>)
    private
+    [unsafe]
     FEntity : T;
    public
     constructor Create(_AEntity: T);
@@ -29,17 +29,11 @@ uses
 
 constructor TSQLGeneric<T>.Create(_AEntity: T);
 begin
-  if Assigned(_AEntity) then
-    FEntity := _AEntity
-  else
-    FEntity := T.Create;
+  FEntity := _AEntity
 end;
 
 destructor TSQLGeneric<T>.Destroy;
 begin
-  if Assigned(FEntity) then
-    FEntity.Free;
-
   inherited;
 end;
 

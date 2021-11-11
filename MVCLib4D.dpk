@@ -25,7 +25,7 @@ package MVCLib4D;
 {$IMAGEBASE $400000}
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Biblioteca de classes comuns de uso geral para aplicações com padrão MVC'}
+{$DESCRIPTION 'Biblioteca de classes comuns de uso geral para aplicações Zeus com padrão MVC'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}
 
@@ -47,10 +47,6 @@ contains
   mvcValidator.Text.Properties.MinLength in 'Source\Validator\mvcValidator.Text.Properties.MinLength.pas',
   mvcValidator.Text.Properties.NonEmpty in 'Source\Validator\mvcValidator.Text.Properties.NonEmpty.pas',
   mvcValidator.Text.Properties in 'Source\Validator\mvcValidator.Text.Properties.pas',
-  mvcEntity.Interfaces in 'Source\ModelEntity\mvcEntity.Interfaces.pas',
-  mvcEntity.List.DataModule in 'Source\ModelEntity\mvcEntity.List.DataModule.pas' {dmEntityQuery: TDataModule},
-  mvcEntity.List in 'Source\ModelEntity\mvcEntity.List.pas',
-  mvcEntity in 'Source\ModelEntity\mvcEntity.pas',
   mvcDAO.Generic in 'Source\DAO\mvcDAO.Generic.pas',
   mvcDAO.Interfaces in 'Source\DAO\mvcDAO.Interfaces.pas',
   mvcDAO.RTTI.Adapter in 'Source\DAO\mvcDAO.RTTI.Adapter.pas',
@@ -58,13 +54,10 @@ contains
   mvcDAO.RTTI.StringUtils in 'Source\DAO\mvcDAO.RTTI.StringUtils.pas',
   mvcDAO.RTTI.Types in 'Source\DAO\mvcDAO.RTTI.Types.pas',
   mvcDAO.Types in 'Source\DAO\mvcDAO.Types.pas',
-  mvcConnections.DB.DatabaseParams in 'Source\Connections\mvcConnections.DB.DatabaseParams.pas',
-  mvcConnections.DB.Firedac.PostgreSQL in 'Source\Connections\mvcConnections.DB.Firedac.PostgreSQL.pas',
-  mvcConnections.Interfaces in 'Source\Connections\mvcConnections.Interfaces.pas',
   mvcLogger.Interfaces in 'Source\Logger\mvcLogger.Interfaces.pas',
   mvcLogger in 'Source\Logger\mvcLogger.pas',
-  mvcEntity.DTO.Interfaces in 'Source\ModelEntity\mvcEntity.DTO.Interfaces.pas',
-  mvcDBEntity in 'Source\ModelEntity\mvcDBEntity.pas';
+  mvcValidator.Text.Properties.OnlyNumber in 'Source\Validator\mvcValidator.Text.Properties.OnlyNumber.pas',
+  mvcNullable in 'Source\DomainTypes\mvcNullable.pas';
 
 end.
 

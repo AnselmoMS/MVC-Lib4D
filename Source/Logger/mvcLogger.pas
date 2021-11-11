@@ -116,7 +116,7 @@ begin
   LLogCache := ExtractLog;
   if Length(LLogCache) > 0 then
   begin
-    LFilename := 'DBLog_' + FormatDateTime('yyyy-mm-dd', Now()) + '.log';
+    LFilename := 'Log_' + FormatDateTime('yyyy-mm-dd', Now()) + '.log';
     AssignFile(LTextFile, LFilename);
 
     if FileExists(LFilename) then
