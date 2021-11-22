@@ -24,7 +24,6 @@ type
     FCriticalSection: TCriticalSection;
     FEvent: TEvent;
     FLogCacheList: TList<string>;
-    class var FLogger: TLoggerThread;
   protected
     procedure Execute; override;
     function ExtractLog: TArray<string>;
@@ -42,7 +41,10 @@ implementation
 uses
   System.SysUtils;
 
-{ TLogger }
+var
+  FLogger: TLoggerThread;
+
+  { TLogger }
 
 procedure TLoggerThread.AddLog(ALog: string);
 begin
@@ -75,7 +77,6 @@ procedure TLoggerThread.Execute;
 var
   LWaitResult: TWaitResult;
 begin
-  { Place thread code here }
   while not Self.Terminated do
   begin
     LWaitResult := FEvent.WaitFor(INFINITE);
@@ -101,6 +102,7 @@ begin
   if FLogger = nil then
   begin
     FLogger := TLoggerThread.Create;
+    FLogger.FreeOnTerminate := True;
     //FLogger.Priority := TThreadPriority.tpLowest;  Baixa prioridade (Somente Windows)
   end;
   Result := FLogger;
@@ -155,5 +157,13 @@ procedure TLogger.AddLog(_ALog: string);
 begin
   TLoggerThread.GetDefault.AddLog(_ALog)
 end;
+
+initialization
+  //TLoggerThread.GetDefault;
+
+finalization
+  FLogger.Terminate;
+  FreeAndNil(FLogger);
+
 
 end.
